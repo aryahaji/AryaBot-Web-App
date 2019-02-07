@@ -27,3 +27,22 @@ body {
     border-radius: 3px;
     margin-bottom: 20px;
   }
+
+
+.article-title {
+  color: #444444;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}

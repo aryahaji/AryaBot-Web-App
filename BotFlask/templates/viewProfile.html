@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block content %}
+    <article class="media content-section">
+         <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2">{{ profile.id }}</a>
+                <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#DeleteModal">Delete</button>
+            </div>
+            <h2><a class="article-title">{{ profile.profileName }}</a></h2>
+            <p class="article-content">Name: {{ profile.firstName }} {{ profile.lastName }}</p>
+            <p class="article-content">Email: {{ profile.email }}</p>
+            <p class="article-content">Phone: {{ profile.phone }}</p>
+            <p class="article-content">Address: {{ profile.address }}, {{ profile.city }}, {{ profile.state }} {{ profile.zipCode }}</p>
+            <p class="article-content">Country: {{ profile.country }}</p>
+            <p class="article-content">Credit Card: {{ profile.cc }}</p>
+            <p class="article-content">Exp: {{ profile.expMonth }}/{{ profile.expYear }}</p>
+            <p class="article-content">CVV: {{ profile.cvv }}</p>
+            <p class="article-content">Product Url/Early Link: {{ profile.url }}</p>
+        </div>
+    </article>
+    <!-- Modal -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="DeleteModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="DeleteModal">Confirm Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this profile?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form action="{{ url_for('deleteProfile', profile_id = profile.id) }}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Delete">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

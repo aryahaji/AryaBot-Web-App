@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <h1>{{ current_user.username }}</h1>
+    {% for profile in profiles %}
+        <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2">{{ profile.id }}</a>
+                </div>
+                <h2><a class="article-title" href="{{ url_for('selectedProfile', profile_id=profile.id) }}">{{ profile.profileName }}</a></h2>
+                <p class="article-content">{{ profile.email }}</p>
+                <p class="article-content">{{ profile.address }}</p>
+                <p class="article-content">{{ profile.url }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}

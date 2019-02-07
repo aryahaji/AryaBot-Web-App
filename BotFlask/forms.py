@@ -27,3 +27,38 @@ class LoginForm(FlaskForm):
     password = StringField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login!')
+
+class CheckoutForm(FlaskForm):
+    profileName = StringField('Profile Name', validators=[DataRequired()])
+    firstName = StringField('First Name', validators=[DataRequired()])
+    lastName = StringField('Last Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    phone = StringField('Phone', validators=[DataRequired()])
+    address = StringField('Address', validators=[DataRequired()])
+    address1 = StringField('Address Line 2')
+    city = StringField('City', validators=[DataRequired()])
+    state = StringField('State', validators=[DataRequired()])
+    zipCode = StringField('Zip', validators=[DataRequired()])
+    country = StringField('Country', validators=[DataRequired()])
+    cc = StringField('Credit Card', validators=[DataRequired(), Length(16)])
+    expMonth = StringField('Expiry Month', validators=[DataRequired(), Length(max=2)])
+    expYear = StringField('Expiry Year', validators=[DataRequired(), Length(max=2)])
+    cvv = StringField('CVV', validators=[DataRequired(), Length(min=3, max=4)])
+    url = StringField('URL', validators=[DataRequired()])
+    submit = SubmitField('Create Profile!')
+
+#request to reset password
+class ResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset') 
+
+    def validate_email(self, email):
+        email = User.query.filter_by(email=email.data).first()
+        if None:
+            raise ValidationError('There is no account found with that email. You must register first!')
+
+#reset password
+class ResetPassword(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    passwordConfirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password!')
