@@ -1,18 +1,19 @@
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '62ab795ca335e00450ff3fc764f415cf' #make env variable
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587 #sending email
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = "" #make env variable
-app.config['MAIL_PASSWORD'] = "" #make env variable
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
+
+app.config['SECRET_KEY']
+app.config['SQLALCHEMY_DATABASE_URI']
+app.config['MAIL_SERVER']
+app.config['MAIL_PORT']
+app.config['MAIL_USE_TLS']
+app.config['MAIL_USERNAME'] 
+app.config['MAIL_PASSWORD'] 
 mail = Mail(app)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)

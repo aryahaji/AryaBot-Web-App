@@ -4,23 +4,49 @@ from BotFlask.forms import RegisterForm, LoginForm, CheckoutForm, ResetForm, Res
 from BotFlask.models import User, Profile
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
+import requests
+from bs4 import BeautifulSoup
+import random
+import tweepy
+from tweepy import OAuthHandler
+import json
+
+@app.route('/index/tweet')
+def tweet():
+    
+    consumer_key = app.config['CONSUMER_KEY']
+    consumer_secret = app.config['CONSUMER_SECRET']
+    access_token = app.config['ACCESS_TOKEN']
+    access_token_secret = app.config['ACCESS_TOKEN_SECRET']
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+    api.update_status("I'm satisfied with AryaBot " + str(random.randint(1,1000)))
+    
+    return redirect(url_for('index'))
 
 #home page
 @app.route('/')
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
+@login_required
 def index():
-    return render_template('index.html')
+
+    response = requests.get("https://api.chucknorris.io/jokes/random")
+    jsonData = json.loads(response.text)
+    joke = jsonData["value"]
+
+    return render_template('index.html', joke=joke)
 
 #about page
 @app.route('/about')
 def about():
-    return render_template('about.html', title = "About")
+    return render_template('about.html', title="About")
 
 #profiles page
 @app.route('/account/profiles', methods=['GET', 'POST'])
 def profiles():
     profiles = Profile.query.all()
-    return render_template('account.html', title = "Profiles", profiles = profiles)
+    return render_template('account.html', title="Profiles", profiles=profiles)
 
 #register for account
 @app.route('/register', methods=['GET', 'POST'])
@@ -35,7 +61,7 @@ def register():
         db.session.commit() #commit changes
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('login')) #redirect to login upon account creation
-    return render_template('register.html', title = "Register", form = form)
+    return render_template('register.html', title="Register", form=form)
 
 #if user exists and passwords match log them in and redirect to home page, if not give login failed message
 @app.route('/login', methods=['GET', 'POST'])
@@ -51,7 +77,7 @@ def login():
             return redirect(nextPage) if nextPage else redirect(url_for('profiles'))
         else:
             flash('Login Failed!', 'danger')
-    return render_template('login.html', title = "Login", form = form)
+    return render_template('login.html', title="Login", form=form)
 
 #logout
 @app.route('/logout')
@@ -79,14 +105,14 @@ def newProfile():
         db.session.commit()
         flash(f"Profile Created!")
         return redirect(url_for('profiles'))
-    return render_template('newProfile.html', title="New Profile", form = form)
+    return render_template('newProfile.html', title="New Profile", form=form)
 
 #going to specific profile
 @app.route('/account/profiles/<int:profile_id>')
 @login_required
 def selectedProfile(profile_id):
     profile = Profile.query.get_or_404(profile_id)
-    return render_template('viewProfile.html', title = profile.id, profile = profile)
+    return render_template('viewProfile.html', title=profile.id, profile=profile)
 
 #deleting a profile
 @app.route('/account/profiles/<int:profile_id>/delete', methods=['POST'])
@@ -123,7 +149,7 @@ def resetPasswordRequest():
         sendResetEmail(user)
         flash('Email has been sent with instructions to reset your password!', 'info')
         return redirect(url_for('login'))
-    return render_template('resetRequest.html', title = 'Reset Password', form = form)
+    return render_template('resetRequest.html', title='Reset Password', form=form)
 
 #reset password
 @app.route('/resetPassword/<token>', methods=['GET', 'POST'])
@@ -141,4 +167,4 @@ def resetPassword(token):
         db.session.commit() 
         flash('Your password has been changed!', 'success')
         return redirect(url_for('login'))
-    return render_template('reset.html', title = 'Reset Password', form = form)
+    return render_template('reset.html', title='Reset Password', form=form)

@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from BotFlask.models import User
+from BotFlask.models import User, Profile
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=4, max=20)])
@@ -45,7 +45,7 @@ class CheckoutForm(FlaskForm):
     expYear = StringField('Expiry Year', validators=[DataRequired(), Length(max=2)])
     cvv = StringField('CVV', validators=[DataRequired(), Length(min=3, max=4)])
     url = StringField('URL', validators=[DataRequired()])
-    submit = SubmitField('Create Profile!')
+    submit = SubmitField('Checkout')
 
 #request to reset password
 class ResetForm(FlaskForm):

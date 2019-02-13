@@ -2,7 +2,6 @@ from BotFlask import db, loginManager, app
 from flask_login import UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
-
 @loginManager.user_loader
 def loadUser(user_id):
     return User.query.get(user_id)
