@@ -10,10 +10,19 @@ import random
 import tweepy
 from tweepy import OAuthHandler
 import json
+from twilio.rest import Client
+
+def getJoke():
+    response = requests.get("https://official-joke-api.appspot.com/random_joke")
+    jsonData = json.loads(response.text)
+    setup = jsonData["setup"]
+    punchline = jsonData["punchline"]
+    space = " "
+    joke = setup + space + punchline
+    return joke
 
 @app.route('/index/tweet')
 def tweet():
-    
     consumer_key = app.config['CONSUMER_KEY']
     consumer_secret = app.config['CONSUMER_SECRET']
     access_token = app.config['ACCESS_TOKEN']
@@ -21,8 +30,7 @@ def tweet():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
-    api.update_status("I'm satisfied with AryaBot " + str(random.randint(1,1000)))
-    
+    api.update_status("I'm satisfied with AryaBot " + "Here is one of the jokes " + getJoke())
     return redirect(url_for('index'))
 
 #home page
@@ -30,12 +38,21 @@ def tweet():
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    return render_template('index.html', joke=getJoke())
 
-    response = requests.get("https://api.chucknorris.io/jokes/random")
-    jsonData = json.loads(response.text)
-    joke = jsonData["value"]
-
-    return render_template('index.html', joke=joke)
+@app.route('/text', methods=['POST', 'GET'])
+def text():
+    account_sid = app.config["ACCOUNT_SID"]
+    auth_token = app.config["AUTH_TOKEN"]
+    client = Client(account_sid, auth_token)
+    form = CheckoutForm()
+    if form.phone.data != None:
+        message = client.messages.create(
+            body=getJoke(),
+            from_=app.config['TWILIO_PHONE'],
+            to=form.phone.data
+        )
+    return render_template('text.html', form=form)
 
 #about page
 @app.route('/about')

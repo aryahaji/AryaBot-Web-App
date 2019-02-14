@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from BotFlask.models import User, Profile
 
@@ -62,3 +62,6 @@ class ResetPassword(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     passwordConfirm = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password!')
+
+class TextForm(FlaskForm):
+    phone = StringField('Phone Number', validators=[DataRequired()])
