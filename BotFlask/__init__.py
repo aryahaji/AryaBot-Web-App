@@ -4,7 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 
-app = Flask(__name__, instance_relative_config=True)
+application = app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('config.py')
 
 app.config['SECRET_KEY']

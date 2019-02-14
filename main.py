@@ -1,4 +1,4 @@
-from BotFlask import app
+from BotFlask import application
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    application.run()
