@@ -80,10 +80,10 @@ headers = {
     pagePostConfirm = s.post(confirmOrder, data=data)
 
     #tweepy. Private keys for API are in .env file
-    consumer_key="RAnw1sCVCGQaRd3TQuF4vStv1"
-    consumer_secret="oxklVw1SGNCorvJHwRzq5DetXUrG2hDwgneiPsldT70vMiOYrd"
-    access_token="1090088596399366145-KKIFSrLOWGJXoOusYUi5Fcdw3krSP3"
-    access_token_secret="0GlKJTLd4nG7r1FqpCZbl5n76VC3q0BHH9bcVgpYQEham"
+    consumer_key=""
+    consumer_secret=""
+    access_token=""
+    access_token_secret=""
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
