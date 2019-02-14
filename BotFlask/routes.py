@@ -30,7 +30,7 @@ def tweet():
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
     api = tweepy.API(auth)
-    api.update_status("I'm satisfied with AryaBot " + "Here is one of the jokes " + getJoke())
+    api.update_status("I'm satisfied with AryaBot " + "Here is one of the jokes, " + getJoke())
     return redirect(url_for('index'))
 
 #home page
